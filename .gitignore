@@ -1,0 +1,19 @@
+# Conda / Python environment
+.conda/
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+#tmp
+tmp/
