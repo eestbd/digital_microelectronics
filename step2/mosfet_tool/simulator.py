@@ -226,17 +226,25 @@ class MosfetSimulator:
         return pd.DataFrame({"Vg_V": vgs, "Id_A_per_um": ids})
 
     def sweep_idvd(self, vg: float, start: float, stop: float, step: float) -> pd.DataFrame:
-        """[과제] 게이트 전압을 고정하고 Vd를 스윕하여 (Vd, Id) 표를 돌려준다.
-
-        sweep_idvg와 거의 같다 — 어느 접점이 고정되고 어느 접점이 변하는가?
-        """
-        raise NotImplementedError("2단계 과제: sweep_idvd를 구현하세요 (sweep_idvg 참고)")
+        """게이트 전압을 고정하고 Vd를 스윕하여 (Vd, Id) 표를 돌려준다."""
+        self.set_bias("gate", vg)
+        vds = voltage_points(start, stop, step)
+        ids = []
+        for vd in vds:
+            self.set_bias("drain", float(vd))
+            ids.append(self.drain_current())
+        return pd.DataFrame({"Vd_V": vds, "Id_A_per_um": ids})
 
     def sweep_cv(self, start: float, stop: float, step: float) -> pd.DataFrame:
-        """[과제] Vg를 스윕하며 게이트 전하의 기울기 dQg/dVg로 (Vg, Cgg) 표를 돌려준다.
+        """Vg를 스윕하며 게이트 전하의 기울기 dQg/dVg로 (Vg, Cgg) 표를 돌려준다.
 
         quasi-static C-V는 enable_transport() 없이 평형 상태에서 계산한다.
-        힌트: 전압마다 gate_charge()를 모은 뒤 np.gradient(전하, 전압)로
-        기울기를 구하고, * UM 으로 F/µm 단위로 바꾼다.
+        gate_charge()의 C/cm를 미분한 뒤 UM을 곱해 F/µm으로 바꾼다.
         """
-        raise NotImplementedError("2단계 과제: sweep_cv를 구현하세요 (힌트: gate_charge, np.gradient)")
+        vgs = voltage_points(start, stop, step)
+        charges = []
+        for vg in vgs:
+            self.set_bias("gate", float(vg))
+            charges.append(self.gate_charge())
+        cggs = np.gradient(charges, vgs) * UM
+        return pd.DataFrame({"Vg_V": vgs, "Cgg_F_per_um": cggs})

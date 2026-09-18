@@ -22,14 +22,21 @@ def run_idvg(device: Device, drain_v: float = 0.05, start_v: float = 0.0,
 
 def run_idvd(device: Device, gate_v: float = 2.0, start_v: float = 0.0,
              stop_v: float = 2.0, step_v: float = 0.1) -> pd.DataFrame:
-    """[과제] run_idvg를 참고해 Id-Vd 해석을 완성하라."""
-    raise NotImplementedError("2단계 과제: run_idvd를 구현하세요 (run_idvg 참고)")
+    """소자를 준비하고 transport를 켠 뒤 Id-Vd 해석 결과를 돌려준다."""
+    sim = MosfetSimulator(device, name="idvd")
+    sim.build()
+    sim.solve_equilibrium()
+    sim.enable_transport()
+    return sim.sweep_idvd(gate_v, start_v, stop_v, step_v)
 
 
 def run_cv(device: Device, start_v: float = -1.0, stop_v: float = 2.0,
            step_v: float = 0.1) -> pd.DataFrame:
-    """[과제] C-V는 전류가 필요 없다 — enable_transport()를 부르지 않는 이유를 생각해 보라."""
-    raise NotImplementedError("2단계 과제: run_cv를 구현하세요 (simulator.sweep_cv부터)")
+    """transport를 켜지 않고 평형 전하의 변화로 quasi-static C-V를 구한다."""
+    sim = MosfetSimulator(device, name="cv")
+    sim.build()
+    sim.solve_equilibrium()
+    return sim.sweep_cv(start_v, stop_v, step_v)
 
 
 def save_csv(path: str | Path, curve: pd.DataFrame) -> None:

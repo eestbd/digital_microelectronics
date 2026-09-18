@@ -19,9 +19,9 @@ sweeps:
 # compare_tcad.py가 읽는 부분: 기본 소자에서 바꿀 옵션만 적으면
 # 소자별 곡선이 한 그래프에 그려진다. 이름과 옵션은 자유롭게 수정 가능.
 compare:
-  tox 5 nm:
-    oxide_thickness_nm: 5.0
-  tox 10 nm:
-    oxide_thickness_nm: 10.0
-  tox 20 nm:
-    oxide_thickness_nm: 20.0
+  Lg 0.5 um:
+    gate_length_um: 0.5
+  Lg 1.0 um:
+    gate_length_um: 1.0
+  Lg 2.0 um:
+    gate_length_um: 2.0
