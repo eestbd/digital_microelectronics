@@ -47,8 +47,6 @@ class MosfetSimulator:
     C-V만 계산할 때는 enable_transport()를 건너뛴다.
     """
 
-    MU_N = 400.0  # electron mobility [cm^2/V·s]
-    MU_P = 200.0  # hole mobility [cm^2/V·s]
     DX_CHANNEL = 25.0 * NM
     DY_OXIDE = 2.5 * NM
     DY_JUNCTION = 10.0 * NM
@@ -148,8 +146,8 @@ class MosfetSimulator:
         for region in ("bulk", "oxide"):
             CreateSolution(self.name, region, "Potential")
         SetSiliconParameters(self.name, "bulk", self.dev.temperature_k)
-        devsim.set_parameter(device=self.name, region="bulk", name="mu_n", value=self.MU_N)
-        devsim.set_parameter(device=self.name, region="bulk", name="mu_p", value=self.MU_P)
+        devsim.set_parameter(device=self.name, region="bulk", name="mu_n", value=self.dev.mu_n)
+        devsim.set_parameter(device=self.name, region="bulk", name="mu_p", value=self.dev.mu_p)
         CreateSiliconPotentialOnly(self.name, "bulk")
         SetOxideParameters(self.name, "oxide", self.dev.temperature_k)
         CreateOxidePotentialOnly(self.name, "oxide", "log_damp")

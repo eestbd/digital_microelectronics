@@ -11,7 +11,7 @@ import yaml
 
 @dataclass
 class Device:
-    """소자 치수와 도핑 (단위는 필드 이름에 표시)."""
+    """소자 치수, 도핑, 이동도 (단위는 필드 이름 또는 주석에 표시)."""
 
     gate_length_um: float = 1.0
     source_length_um: float = 0.5
@@ -22,6 +22,8 @@ class Device:
     body_doping_cm3: float = 1.0e16
     sd_doping_cm3: float = 1.0e19
     temperature_k: float = 300.0
+    mu_n: float = 400.0  # electron mobility [cm^2/(V*s)]
+    mu_p: float = 200.0  # hole mobility [cm^2/(V*s)]
 
 
 def load_config(path: str | Path) -> tuple[Device, dict]:
