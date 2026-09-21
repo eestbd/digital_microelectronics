@@ -1,23 +1,32 @@
+# 공통 소자 설정이다. 길이는 항목 이름에 적힌 um 또는 nm 단위로 입력한다.
 device:
-  gate_length_um: 1.0
-  source_length_um: 0.5
-  drain_length_um: 0.5
-  oxide_thickness_nm: 10.0
-  silicon_thickness_um: 0.5
-  junction_depth_um: 0.1
-  body_doping_cm3: 1.0e+16
-  sd_doping_cm3: 1.0e+19
-  temperature_k: 300.0
+  gate_length_um: 1.0       # 소스와 드레인 사이의 게이트 길이
+  source_length_um: 0.5     # 게이트 왼쪽 소스 영역 길이
+  drain_length_um: 0.5      # 게이트 오른쪽 드레인 영역 길이
+  oxide_thickness_nm: 10.0  # 게이트 아래 산화막 두께
+  silicon_thickness_um: 0.5 # 실리콘 표면에서 바디 접점까지의 깊이
+  junction_depth_um: 0.1    # 소스와 드레인 접합 깊이
+  body_doping_cm3: 1.0e+16  # 바디의 억셉터 농도이며 단위는 cm^-3이다.
+  sd_doping_cm3: 1.0e+19    # 소스와 드레인의 도너 농도
+  temperature_k: 300.0     # 절대온도이며 단위는 K다.
+  # mu_n과 mu_p를 생략하면 Device의 기본값인 400과 200을 사용한다.
+  # 이동도를 바꾸려면 device 아래에 해당 항목을 cm^2/(V s) 단위로 적으면 된다.
+
+# 해석별 고정 전압과 스윕 범위다. 여기의 전압 단위는 모두 V다.
 sweeps:
   idvg:
-    drain_v: 0.05
-    start_v: 0.0
-    stop_v: 2.0
-    step_v: 0.1
-  # idvd / cv 스윕 설정은 2단계 과제를 구현한 뒤 여기에 추가해 보자
+    drain_v: 0.05  # Id-Vg 해석 중 유지할 드레인 전압
+    start_v: 0.0   # 게이트 전압의 시작값
+    stop_v: 2.0    # 게이트 전압의 끝값
+    step_v: 0.1    # 게이트 전압을 바꾸는 간격
+  # idvd와 cv를 생략하면 workflows.py에 정해 둔 기본 조건으로 계산한다.
+  # Id-Vd 기본 조건은 게이트 2 V, 드레인 0 V부터 2 V까지 0.1 V 간격이다.
+  # C-V 기본 조건은 게이트 -1 V부터 2 V까지 0.1 V 간격이다.
 
-# compare_tcad.py가 읽는 부분: 기본 소자에서 바꿀 옵션만 적으면
-# 소자별 곡선이 한 그래프에 그려진다. 이름과 옵션은 자유롭게 수정 가능.
+# compare_tcad.py가 기본 device에서 바꿀 항목만 읽어 소자별 설정을 만든다.
+# 기존 산화막 두께 비교에서 게이트 길이 비교로 변경한 부분이다.
+# 산화막 두께와 도핑 등은 같게 두고 길이만 바꿔 Id-Vg의 차이를 확인한다.
+# 각 소자의 이름은 CSV와 그래프에서 곡선을 구분하는 데 사용한다.
 compare:
   Lg 0.5 um:
     gate_length_um: 0.5

@@ -1,14 +1,17 @@
+# 프로젝트에서 사용하는 Conda 환경의 이름과 패키지 목록이다.
 name: devsim-project
+# Conda 패키지는 기본 저장소에서 설치한다.
 channels:
   - defaults
 dependencies:
-  - python=3.11
-  - pip
-  - mkl
-  - numpy>=2.0,<3
-  - pandas>=2.2,<4
+  - python=3.11     # 실행 코드와 제공된 데모에서 사용하는 파이썬 버전
+  - pip            # 아래 pip 목록의 패키지를 설치할 때 사용한다.
+  - mkl            # 수치 계산에 필요한 연산 라이브러리
+  - numpy>=2.0,<3   # 전압 배열과 수치 미분 계산
+  - pandas>=2.2,<4  # 결과 표와 CSV 입출력
+  # DEVSIM과 화면 구성 도구는 pip로 설치한다.
   - pip:
-      - devsim==2.10.0
-      - plotly>=6,<7
-      - streamlit>=1.45,<2
-      - pyyaml>=6,<7
+      - devsim==2.10.0     # 반도체 소자의 물리 방정식을 풀며 버전을 고정한다.
+      - plotly>=6,<7       # 비교 그래프와 HTML 결과 생성
+      - streamlit>=1.45,<2 # 브라우저에서 사용하는 입력 화면과 결과 화면
+      - pyyaml>=6,<7       # 소자와 스윕 설정 파일 읽기
